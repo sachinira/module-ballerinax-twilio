@@ -39,8 +39,8 @@ public function main() {
 
     //Response is printed as log messages
     if (details is twilio:SmsResponse) {
-        log:print("SMS_SID: " + details.sid.toString() + ", Body: " + details.body.toString());
+        log:printInfo("SMS_SID: " + details.sid.toString() + ", Body: " + details.body.toString());
     } else {
-        log:print(details.message());
+        log:printInfo(details.message());
     }
 }

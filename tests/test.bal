@@ -49,11 +49,11 @@ function testAccountDetails() {
         authToken: twilioAuthToken
     };
     Client twilioClient = new (twilioConfig);
-    log:print("\n ---------------------------------------------------------------------------");
-    log:print("twilioClient -> getAccountDetails()");
+    log:printInfo("\n ---------------------------------------------------------------------------");
+    log:printInfo("twilioClient -> getAccountDetails()");
     var details = twilioClient->getAccountDetails();
     if (details is Account) {
-        log:print("Account Name: " + details.name.toBalString());
+        log:printInfo("Account Name: " + details.name.toBalString());
     } else {
         test:assertFail(msg = details.message());
     }
@@ -65,14 +65,14 @@ function testAccountDetails() {
     enable: true
 }
 function testSendSms() {
-    log:print("\n ---------------------------------------------------------------------------");
-    log:print("twilioClient -> sendSms()");
+    log:printInfo("\n ---------------------------------------------------------------------------");
+    log:printInfo("twilioClient -> sendSms()");
     string fromMobile = fromNumber;
     string toMobile = toNumber;
     string message = test_message;
     var details = twilioClient->sendSms(fromMobile, toMobile, message);
     if (details is SmsResponse) {
-        log:print("SMS_SID: " + details.sid.toBalString() + ", Body: " + details.body.toBalString());
+        log:printInfo("SMS_SID: " + details.sid.toBalString() + ", Body: " + details.body.toBalString());
         messageSid = <@untainted>details.sid;
     } else {
         test:assertFail(msg = details.message());
@@ -85,11 +85,11 @@ function testSendSms() {
     enable: true
 }
 function testGetMessage() {
-    log:print("\n ---------------------------------------------------------------------------");
-    log:print("twilioClient -> getMessage()");
+    log:printInfo("\n ---------------------------------------------------------------------------");
+    log:printInfo("twilioClient -> getMessage()");
     var details = twilioClient->getMessage(messageSid);
     if (details is MessageResourceResponse) {
-        log:print("MESSAGE_SID: " + details.sid.toBalString() + ", Body: " + details.body.toBalString());
+        log:printInfo("MESSAGE_SID: " + details.sid.toBalString() + ", Body: " + details.body.toBalString());
     } else {
         test:assertFail(msg = details.message());
     }
@@ -101,14 +101,14 @@ function testGetMessage() {
     enable: true
 }
 function testSendWhatsAppMessage() {
-    log:print("\n ---------------------------------------------------------------------------");
-    log:print("twilioClient -> sendWhatsAppMessage()");
+    log:printInfo("\n ---------------------------------------------------------------------------");
+    log:printInfo("twilioClient -> sendWhatsAppMessage()");
     string fromMobile = fromWhatsappNumber;
     string toMobile = toNumber;
     string message = test_message;
     var details = twilioClient->sendWhatsAppMessage(fromMobile, toMobile, message);
     if (details is WhatsAppResponse) {
-        log:print("WhatsAPP_MSID: " + details.sid.toBalString() + ", Body: " + details.body.toBalString());
+        log:printInfo("WhatsAPP_MSID: " + details.sid.toBalString() + ", Body: " + details.body.toBalString());
     } else {
         test:assertFail(msg = details.message());
     }
@@ -120,14 +120,14 @@ function testSendWhatsAppMessage() {
     enable: true
 }
 function testMakeVoiceCall() {
-    log:print("\n ---------------------------------------------------------------------------");
-    log:print("twilioClient -> makeVoiceCall()");
+    log:printInfo("\n ---------------------------------------------------------------------------");
+    log:printInfo("twilioClient -> makeVoiceCall()");
     string fromMobile = fromNumber;
     string toMobile = toNumber;
     string twimlURL = twimlUrl;
     var details = twilioClient->makeVoiceCall(fromMobile, toMobile, twimlURL);
     if (details is VoiceCallResponse) {
-        log:print(details.sid.toBalString());
+        log:printInfo(details.sid.toBalString());
     } else {
         test:assertFail(msg = details.message());
     }
@@ -139,12 +139,12 @@ function testMakeVoiceCall() {
 //     enable: true
 // }
 // function testAuthyAppDetails() {
-//     log:print("\n ---------------------------------------------------------------------------");
-//     log:print("twilioClient -> getAuthyAppDetails()");
+//     log:printInfo("\n ---------------------------------------------------------------------------");
+//     log:printInfo("twilioClient -> getAuthyAppDetails()");
 
 //     var details = twilioClient->getAuthyAppDetails();
 //     if (details is AuthyAppDetailsResponse) {
-//         log:print(details.toBalString());
+//         log:printInfo(details.toBalString());
 //     } else {
 //         test:assertFail(msg = details.message());
 //     }
@@ -156,8 +156,8 @@ function testMakeVoiceCall() {
 //     enable: true
 // }
 // function testAuthyUserAdd() {
-//     log:print("\n ---------------------------------------------------------------------------");
-//     log:print("twilioClient -> addAuthyUser()");
+//     log:printInfo("\n ---------------------------------------------------------------------------");
+//     log:printInfo("twilioClient -> addAuthyUser()");
 
 //     string email = "";
 //     string phone = "";
@@ -165,7 +165,7 @@ function testMakeVoiceCall() {
 
 //     var details = twilioClient->addAuthyUser(email, phone, countryCode);
 //     if (details is AuthyUserAddResponse) {
-//         log:print(details.toBalString());
+//         log:printInfo(details.toBalString());
 //         testUserId = <@untainted>details.userId;
 //     } else {
 //         test:assertFail(msg = details.message());
@@ -178,12 +178,12 @@ function testMakeVoiceCall() {
 //     enable: true
 // }
 // function testAuthyUserStatus() {
-//     log:print("\n ---------------------------------------------------------------------------");
-//     log:print("twilioClient -> getAuthyUserStatus()");
+//     log:printInfo("\n ---------------------------------------------------------------------------");
+//     log:printInfo("twilioClient -> getAuthyUserStatus()");
 
 //     var details = twilioClient->getAuthyUserStatus(testUserId);
 //     if (details is AuthyUserStatusResponse) {
-//         log:print(details.toBalString());
+//         log:printInfo(details.toBalString());
 //     } else {
 //         test:assertFail(msg = details.message());
 //     }
@@ -197,12 +197,12 @@ function testMakeVoiceCall() {
 //     enable: true
 // }
 // function testAuthyUserDelete() {
-//     log:print("\n ---------------------------------------------------------------------------");
-//     log:print("twilioClient -> deleteAuthyUser()");
+//     log:printInfo("\n ---------------------------------------------------------------------------");
+//     log:printInfo("twilioClient -> deleteAuthyUser()");
 
 //     var details = twilioClient->deleteAuthyUser(testUserId);
 //     if (details is AuthyUserDeleteResponse) {
-//         log:print(details.toBalString());
+//         log:printInfo(details.toBalString());
 //     } else {
 //         test:assertFail(msg = details.message());
 //     }
@@ -214,12 +214,12 @@ function testMakeVoiceCall() {
 //     enable: true
 // }
 // function testAuthyUserSecret() {
-//     log:print("\n ---------------------------------------------------------------------------");
-//     log:print("twilioClient -> getAuthyUserSecret()");
+//     log:printInfo("\n ---------------------------------------------------------------------------");
+//     log:printInfo("twilioClient -> getAuthyUserSecret()");
 
 //     var details = twilioClient->getAuthyUserSecret(testUserId);
 //     if (details is AuthyUserSecretResponse) {
-//         log:print(details.toBalString());
+//         log:printInfo(details.toBalString());
 //     } else {
 //         test:assertFail(msg = details.message());
 //     }
@@ -231,12 +231,12 @@ function testMakeVoiceCall() {
 //     enable: true
 // }
 // function testAuthyOtpViaSms() {
-//     log:print("\n ---------------------------------------------------------------------------");
-//     log:print("twilioClient -> requestOtpViaSms()");
+//     log:printInfo("\n ---------------------------------------------------------------------------");
+//     log:printInfo("twilioClient -> requestOtpViaSms()");
 
 //     var details = twilioClient->requestOtpViaSms(testUserId);
 //     if (details is AuthyOtpResponse) {
-//         log:print(details.toBalString());
+//         log:printInfo(details.toBalString());
 //     } else {
 //         test:assertFail(msg = details.message());
 //     }
@@ -248,12 +248,12 @@ function testMakeVoiceCall() {
 //     enable: true
 // }
 // function testAuthyOtpViaCall() {
-//     log:print("\n ---------------------------------------------------------------------------");
-//     log:print("twilioClient -> requestOtpViaCall()");
+//     log:printInfo("\n ---------------------------------------------------------------------------");
+//     log:printInfo("twilioClient -> requestOtpViaCall()");
 
 //     var details = twilioClient->requestOtpViaCall(testUserId);
 //     if (details is AuthyOtpResponse) {
-//         log:print(details.toBalString());
+//         log:printInfo(details.toBalString());
 //     } else {
 //         test:assertFail(msg = details.message());
 //     }
@@ -265,17 +265,17 @@ function testMakeVoiceCall() {
 //     enable: true
 // }
 // function testAuthyOtpVerify() {
-//     log:print("\n ---------------------------------------------------------------------------");
-//     log:print("twilioClient -> verifyOtp()");
+//     log:printInfo("\n ---------------------------------------------------------------------------");
+//     log:printInfo("twilioClient -> verifyOtp()");
 
 //     string token = "8875458";
 
 //     var details = twilioClient->verifyOtp(testUserId, token);
 //     if (details is AuthyOtpVerifyResponse) {
-//         log:print(details.toBalString());
+//         log:printInfo(details.toBalString());
 //     } else {
 //         // This always returns a error since the token should be what the user get.
-//         log:print(details.message());
+//         log:printInfo(details.message());
 //     }
 // }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

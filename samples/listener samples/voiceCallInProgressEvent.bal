@@ -35,7 +35,7 @@ service / on twilioListener {
         var payload = check twilioListener.getEventType(caller, request);
         if (payload is webhook:CallStatusChangeEvent) {
             if (payload.CallStatus == webhook:IN_PROGRESS) {
-                log:print("The call has been answered");
+                log:printInfo("The call has been answered");
             } 
         } 
     }
@@ -56,7 +56,7 @@ public function main() {
     };
     var details = twilioClient->makeVoiceCall(fromMobile, toMobile, twimlURL, webhookCallbackInfo);
     if (details is error) {
-        log:print(details.message());
+        log:printInfo(details.message());
     }
 
 }

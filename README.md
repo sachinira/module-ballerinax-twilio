@@ -90,9 +90,9 @@ Java Development Kit (JDK) with version 11 is required.
 
         //Response is printed as log messages
         if (details is twilio:Account) {
-            log:print("Account Detail: " + details.toString());
+            log:printInfo("Account Detail: " + details.toString());
         } else {
-            log:print(details.message());
+            log:printInfo(details.message());
         }
     }
 	```
@@ -145,7 +145,7 @@ Callback URL registration method depends on the event type.
             var payload = check twilioListener.getEventType(caller, request);
             if (payload is webhook:CallStatusChangeEvent) {
                 if (payload.CallStatus == webhook:RINGING) {
-                    log:print("The call is in rining status");
+                    log:printInfo("The call is in rining status");
                 } 
             } 
         }
@@ -179,9 +179,9 @@ Sample is available at: samples/client samples/getAccountDetail.bal
 
         //Response is printed as log messages
         if (details is twilio:Account) {
-            log:print("Account Detail: " + details.toString());
+            log:printInfo("Account Detail: " + details.toString());
         } else {
-            log:print(details.message());
+            log:printInfo(details.message());
         }
     }
 ```
@@ -215,9 +215,9 @@ public function main() {
 
     //Response is printed as log messages
     if (details is twilio:SmsResponse) {
-        log:print("SMS_SID: " + details.sid.toString() + ", Body: " + details.body.toString());
+        log:printInfo("SMS_SID: " + details.sid.toString() + ", Body: " + details.body.toString());
     } else {
-        log:print(details.message());
+        log:printInfo(details.message());
     }
 }
 ```
@@ -248,9 +248,9 @@ Sample is available at: samples/client samples/sendWhatsappMessage.bal
 
         //Response is printed as log messages
         if (details is twilio:WhatsAppResponse) {
-            log:print("Message Detail: " + details.toString());
+            log:printInfo("Message Detail: " + details.toString());
         } else {
-            log:print(details.message());
+            log:printInfo(details.message());
         }
     }
 ```
@@ -286,9 +286,9 @@ Sample is available at: samples/client samples/makeVoiceCall.bal
 
         //Response is printed as log messages
         if (details is twilio:VoiceCallResponse) {
-            log:print("Message Detail: " + details.toString());
+            log:printInfo("Message Detail: " + details.toString());
         } else {
-            log:print(details.message());
+            log:printInfo(details.message());
         }
     }
 ```
@@ -321,9 +321,9 @@ Sample is available at: samples/client samples/getMessage.bal
 
         //Response is printed as log messages
         if (details is twilio:MessageResourceResponse) {
-            log:print("Message Detail: " + details.toString());
+            log:printInfo("Message Detail: " + details.toString());
         } else {
-            log:print(details.message());
+            log:printInfo(details.message());
         }
     }
 ```
@@ -355,7 +355,7 @@ service / on twilioListener {
         //Check for the event and get the status of the event.
         if (payload is webhook:SmsStatusChangeEvent) {
             if (payload.SmsStatus == webhook:QUEUED) {
-                log:print("The SMS has been queued to be sent");
+                log:printInfo("The SMS has been queued to be sent");
             } 
         } 
     }
@@ -369,7 +369,7 @@ public function main() {
     twilio:Client twilioClient = new (twilioConfig);
     var details = twilioClient->sendSms(fromMobile, toMobile, message, statusCallbackUrl);
     if (details is error) {
-        log:print(details.message());
+        log:printInfo(details.message());
     }
 
 }
@@ -399,7 +399,7 @@ service / on twilioListener {
         var payload = check twilioListener.getEventType(caller, request);
         if (payload is webhook:CallStatusChangeEvent) {
             if (payload.CallStatus == webhook:COMPLETED) {
-                log:print("The call has been answered");
+                log:printInfo("The call has been answered");
             } 
         } 
     }
@@ -420,7 +420,7 @@ public function main() {
     };
     var details = twilioClient->makeVoiceCall(fromMobile, toMobile, twimlURL, webhookCallbackInfo);
     if (details is error) {
-        log:print(details.message());
+        log:printInfo(details.message());
     }
 
 }

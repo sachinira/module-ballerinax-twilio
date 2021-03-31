@@ -37,7 +37,7 @@ service / on twilioListener {
         //Check for the event and get the status of the event.
         if (payload is webhook:SmsStatusChangeEvent) {
             if (payload.SmsStatus == webhook:QUEUED) {
-                log:print("The SMS has been queued to be sent");
+                log:printInfo("The SMS has been queued to be sent");
             } 
         } 
     }
@@ -51,7 +51,7 @@ public function main() {
     twilio:Client twilioClient = new (twilioConfig);
     var details = twilioClient->sendSms(fromMobile, toMobile, message, statusCallbackUrl);
     if (details is error) {
-        log:print(details.message());
+        log:printInfo(details.message());
     }
 
 }

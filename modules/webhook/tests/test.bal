@@ -17,18 +17,19 @@
 import ballerina/log;
 import ballerina/lang.'int as ints;
 import ballerina/lang.runtime as runtime;
+import ballerina/os;
 import ballerina/test;
 import ballerinax/twilio;
 import ballerina/http;
 
-configurable string twilioAccountSid = ?;
-configurable string twilioAuthToken = ?;
-configurable string fromNumber =  ?;
-configurable string toNumber =  ?;
-configurable string test_message = ?;
-configurable string port =  ?;
-configurable string twimlUrl =  ?;
-configurable string callbackUrl =  ?;
+configurable string twilioAccountSid = os:getEnv("ACCOUNT_SID");
+configurable string twilioAuthToken = os:getEnv("AUTH_TOKEN");
+configurable string fromNumber = os:getEnv("SAMPLE_FROM_MOBILE");
+configurable string toNumber = os:getEnv("SAMPLE_TO_MOBILE");
+configurable string test_message = os:getEnv("SAMPLE_MESSAGE");
+configurable string twimlUrl = os:getEnv("SAMPLE_TWIML_URL");
+configurable string callbackUrl = os:getEnv("CALLBACK_URL");
+configurable string port =  os:getEnv("PORT");
 
 int PORT = check ints:fromString(port);
 listener TwilioEventListener twilioListener = new (PORT, twilioAuthToken, callbackUrl);
@@ -64,7 +65,7 @@ service / on twilioListener {
                 callCompletedNotified = true;
             }
         } else {
-            log:print(payload.message());
+            log:printInfo(payload.message());
         }
     }
 }
@@ -77,11 +78,11 @@ twilio:TwilioConfiguration twilioConfig = {
 
 twilio:Client twilioClient = new (twilioConfig);
 
-@test:Config {enable: false}
+@test:Config {enable: true}
 function testSmsQueued() {
     var details = twilioClient->sendSms(fromNumber, toNumber, test_message, callbackUrl);
     if (details is twilio:SmsResponse) {
-        log:print(details.sid.toBalString());
+        log:printInfo(details.sid.toBalString());
     } else {
         test:assertFail(msg = details.message());
     }
@@ -92,18 +93,18 @@ function testSmsQueued() {
         counter -= 1;
     }
 
-    log:print("\n ---------------------------------------------------------------------------");
-    log:print("twilioWebhook -> recieveSmsQueued()");
+    log:printInfo("\n ---------------------------------------------------------------------------");
+    log:printInfo("twilioWebhook -> recieveSmsQueued()");
 
     test:assertTrue(smsSentNotified, msg = "expected a sms to be send and receive a queued notification");
 
 }
 
-@test:Config {enable: false}
+@test:Config {enable: true}
 function testSmsSent() {
     var details = twilioClient->sendSms(fromNumber, toNumber, test_message, callbackUrl);
     if (details is twilio:SmsResponse) {
-        log:print(details.sid.toBalString());
+        log:printInfo(details.sid.toBalString());
     } else {
         test:assertFail(msg = details.message());
     }
@@ -114,16 +115,16 @@ function testSmsSent() {
         counter -= 1;
     }
 
-    log:print("\n ---------------------------------------------------------------------------");
-    log:print("twilioWebhook -> testSmsSent()");
+    log:printInfo("\n ---------------------------------------------------------------------------");
+    log:printInfo("twilioWebhook -> testSmsSent()");
 
     test:assertTrue(smsSentNotified, msg = "expected a sms to be send and receive a sent notification");
 }
 
 @test:Config {enable: false}
 function testVoiceCallRinging() {
-    log:print("\n -------------------------Starting CallRingingEvent-------------------------------------------------");
-    log:print("twilioWebhook -> testVoiceCallRinging()");
+    log:printInfo("\n -------------------------Starting CallRingingEvent-------------------------------------------------");
+    log:printInfo("twilioWebhook -> testVoiceCallRinging()");
     twilio:StatusCallback statusCallback = {
         url: callbackUrl,
         method: POST,
@@ -131,9 +132,9 @@ function testVoiceCallRinging() {
     };
     runtime:sleep(10);
     var details = twilioClient->makeVoiceCall(fromNumber, toNumber, twimlUrl, statusCallback);
-    log:print("\n ------------The call needn't to be answered--------------------------------------------------------");
+    log:printInfo("\n ------------The call needn't to be answered--------------------------------------------------------");
     if (details is twilio:VoiceCallResponse) {
-        log:print(details.status.toBalString());
+        log:printInfo(details.status.toBalString());
     } else {
         test:assertFail(msg = details.message());
     }
@@ -144,13 +145,13 @@ function testVoiceCallRinging() {
         counter -= 1;
     }
     test:assertTrue(callRingingNotified, msg = "expected a call to be make and receive a ringing notification");
-    log:print("\n -----------------------The End of CallRingingEvent Test--------------------------------------------");
+    log:printInfo("\n -----------------------The End of CallRingingEvent Test--------------------------------------------");
 }
 
 @test:Config {enable: false }
 function testVoiceCallAnswered() {
-    log:print("\n --------------Starting CallAnswerdEvent------------------------------------------------------------");
-    log:print("twilioWebhook -> testVoiceCallAnswered()");
+    log:printInfo("\n --------------Starting CallAnswerdEvent------------------------------------------------------------");
+    log:printInfo("twilioWebhook -> testVoiceCallAnswered()");
     twilio:StatusCallback statusCallback = {
         url: callbackUrl,
         method: POST,
@@ -158,9 +159,9 @@ function testVoiceCallAnswered() {
     };
     runtime:sleep(10);
     var details = twilioClient->makeVoiceCall(fromNumber, toNumber, twimlUrl, statusCallback);
-    log:print("\n ------------The call should be answered------------------------------------------------------------");
+    log:printInfo("\n ------------The call should be answered------------------------------------------------------------");
     if (details is twilio:VoiceCallResponse) {
-        log:print(details.status.toBalString());
+        log:printInfo(details.status.toBalString());
     } else {
         test:assertFail(msg = details.message());
     }
@@ -171,13 +172,13 @@ function testVoiceCallAnswered() {
         counter -= 1;
     }
     test:assertTrue(callInProgressNotified, msg = "expected a call to be make and receive a answered notification");
-    log:print("\n --------------The End of  CallAnswerdEvent Test--------------------------------------------------");
+    log:printInfo("\n --------------The End of  CallAnswerdEvent Test--------------------------------------------------");
 }
 
 @test:Config {enable: false}
 function testVoiceCallCompleted() {
-    log:print("\n --------------Starting CallCompletedEvent Test-----------------------------------------------------");
-    log:print("twilioWebhook -> testVoiceCallCompleted()");
+    log:printInfo("\n --------------Starting CallCompletedEvent Test-----------------------------------------------------");
+    log:printInfo("twilioWebhook -> testVoiceCallCompleted()");
     twilio:StatusCallback statusCallback = {
         url: callbackUrl,
         method: POST,
@@ -186,9 +187,9 @@ function testVoiceCallCompleted() {
 
     runtime:sleep(10);
     var details = twilioClient->makeVoiceCall(fromNumber, toNumber, twimlUrl, statusCallback);
-    log:print("\n ------------The call should be answered------------------------------------------------------------");
+    log:printInfo("\n ------------The call should be answered------------------------------------------------------------");
     if (details is twilio:VoiceCallResponse) {
-        log:print(details.status.toBalString());
+        log:printInfo(details.status.toBalString());
     } else {
         test:assertFail(msg = details.message());
     }
@@ -200,5 +201,5 @@ function testVoiceCallCompleted() {
     }
 
     test:assertTrue(callCompletedNotified, msg = "expected a call to be make and receive a completed notification");
-    log:print("\n --------------The End of  CallCompletedEvent Test--------------------------------------------------");
+    log:printInfo("\n --------------The End of  CallCompletedEvent Test--------------------------------------------------");
 }

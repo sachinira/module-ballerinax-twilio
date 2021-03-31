@@ -15,7 +15,7 @@
 // under the License.
 
 import ballerina/http;
-import ballerina/encoding;
+import ballerina/url;
 import ballerina/crypto;
 
 //todo:Verify by signing secret
@@ -84,19 +84,19 @@ public class TwilioEventListener {
     isolated function getSignature(string authToken, string url, TwilioEvent eventPayload) returns error|string {
         final map<string> keyValueMap = {};
         string[] keys = [];
-        foreach var [key, value] in eventPayload.entries() {
-            if(keyValueMap[key] == "") {
-                keys.push(key);
-                keyValueMap[key] = value;
+        foreach var [entry, value] in eventPayload.entries() {
+            if(keyValueMap[entry] === "") {
+                keys.push(entry);
+                keyValueMap[entry] = value;
             }
         }
         string[] sortedKeyArray = keys.sort();
         // accumated string of key values pairs from the payload, initialized with the URL
         string accumilatedKeyValue = url;
-        foreach var key in sortedKeyArray {
-            accumilatedKeyValue = accumilatedKeyValue + key + <string>eventPayload[key];
+        foreach var entry in sortedKeyArray {
+            accumilatedKeyValue = accumilatedKeyValue + entry + <string>eventPayload[entry];
         }
-        var decodedMessageBody = check encoding:decodeUriComponent(accumilatedKeyValue, "UTF-8");
+        string decodedMessageBody = check url:decode(accumilatedKeyValue, "UTF-8");
         byte[] hmac = check crypto:hmacSha1(decodedMessageBody.toBytes(), authToken.toBytes());
         string urlEncodedValue = hmac.toBase64();
 

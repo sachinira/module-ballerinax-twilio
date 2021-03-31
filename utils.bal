@@ -14,7 +14,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import ballerina/encoding;
+import ballerina/url;
 import ballerina/http;
 import ballerina/lang.'boolean;
 
@@ -28,14 +28,14 @@ isolated function parseResponseToJson(http:Response|http:ClientError httpRespons
         if (jsonResponse is json) {
             if (httpResponse.statusCode != http:STATUS_OK && httpResponse.statusCode != http:STATUS_CREATED) {
                 string code = "";
-                if (jsonResponse?.error_code != ()) {
+                if (jsonResponse?.error_code is json) { //////
                     json|error codeTemp = jsonResponse?.error_code;
                     if(codeTemp is json) {
                         code = codeTemp.toString();
                     } else{
                         code = codeTemp.toString();
                     }
-                } else if (jsonResponse?.'error != ()) {
+                } else if (jsonResponse?.'error is json) {
                     json|error errorTemp = jsonResponse.'error;
                     if(errorTemp is json) {
                         code = errorTemp.toString();
@@ -72,7 +72,7 @@ isolated function parseResponseToJson(http:Response|http:ClientError httpRespons
 # + value - Value of the form value parameter
 # + return - Created request body with encoded string or `error` if anything wrong happen when encoding the value
 isolated function createUrlEncodedRequestBody(string requestBody, string key, string value) returns string|Error {
-    var encodedVar = encoding:encodeUriComponent(value, CHARSET_UTF8);
+    var encodedVar = url:encode(value, CHARSET_UTF8);
     string encodedString = "";
     string body = "";
     if (encodedVar is string) {

@@ -67,7 +67,7 @@ service / on twilioListener {
         //Check for the event and get the status of the event.
         if (payload is webhook:SmsStatusChangeEvent) {
             if (payload.SmsStatus == webhook:SENT) {
-                log:print("An SMS has been sent");
+                log:printInfo("An SMS has been sent");
             } 
         } 
     }
@@ -81,7 +81,7 @@ public function main() {
     twilio:Client twilioClient = new (twilioConfig);
     var details = twilioClient->sendSms(fromMobile, toMobile, message, statusCallbackUrl);
     if (details is error) {
-        log:print(details.message());
+        log:printInfo(details.message());
     }
 
 }

@@ -38,8 +38,8 @@ public function main() {
 
     //Response is printed as log messages
     if (details is twilio:VoiceCallResponse) {
-        log:print("Message Detail: " + details.toString());
+        log:printInfo("Message Detail: " + details.toString());
     } else {
-        log:print(details.message());
+        log:printInfo(details.message());
     }
 }

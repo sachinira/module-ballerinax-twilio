@@ -28,7 +28,7 @@ public client class Client {
     public http:Client basicClient;
     public http:Client authyClient;
 
-    public function init(TwilioConfiguration twilioConfig) {
+    public isolated function init(TwilioConfiguration twilioConfig) {
         self.accountSId = twilioConfig.accountSId;
 
         auth:CredentialsConfig config = {
@@ -47,12 +47,10 @@ public client class Client {
             });
         } else {
             self.basicClient = checkpanic new (TWILIO_API_BASE_URL, config = {
-                auth: config,
-                secureSocket: {disable: true}
+                auth: config
             });
             self.authyClient = checkpanic new (AUTHY_API_BASE_URL, config = {
-                auth: config,
-                secureSocket: {disable: true}
+                auth: config
             });
         }
     }
@@ -60,7 +58,7 @@ public client class Client {
     # Return account details of the given account-sid.
     #
     # + return - If success, returns account object with basic details, else returns error
-    remote function getAccountDetails() returns @tainted Account|error {
+    remote isolated function getAccountDetails() returns @tainted Account|error {
         string requestPath = TWILIO_ACCOUNTS_API + FORWARD_SLASH + self.accountSId + JSON_EXTENSION;
         http:Response response = <http:Response> check self.basicClient->get(requestPath);
         json jsonResponse = check parseResponseToJson(response);
@@ -75,7 +73,7 @@ public client class Client {
     # + message - Message body of the SMS
     # + statusCallbackUrl - (optional) Callback URL where the status callback events needs to be dispatched
     # + return - If success, returns a programmable SMS response object, else returns error
-    remote function sendSms(string fromNo, string toNo, string message, string? statusCallbackUrl = ()) returns @tainted 
+    remote isolated function sendSms(string fromNo, string toNo, string message, string? statusCallbackUrl = ()) returns @tainted 
     SmsResponse|error {
         http:Request req = new;
 
@@ -102,7 +100,7 @@ public client class Client {
     #
     # + messageSid - Message-sid of a relavant message
     # + return - If success, returns a message resourse responce record, else returns error
-    remote function getMessage(string messageSid) returns @tainted MessageResourceResponse|error {
+    remote isolated function getMessage(string messageSid) returns @tainted MessageResourceResponse|error {
         string requestPath = TWILIO_ACCOUNTS_API + FORWARD_SLASH + self.accountSId + MESSAGE + messageSid + JSON_EXTENSION;
         http:Response response = <http:Response>check self.basicClient->get(requestPath);
         json jsonResponse = check parseResponseToJson(response);
@@ -116,7 +114,7 @@ public client class Client {
     # + toNo - Mobile number by which the WhatsApp message should be received
     # + message - Message body of the WhatsApp message
     # + return - If success, returns a WhatsAppResponse object, else returns error
-    remote function sendWhatsAppMessage(string fromNo, string toNo, string message) returns @tainted WhatsAppResponse|
+    remote isolated function sendWhatsAppMessage(string fromNo, string toNo, string message) returns @tainted WhatsAppResponse|
     error {
         http:Request req = new;
         string requestBody = "";
@@ -138,7 +136,7 @@ public client class Client {
     # + twiml - TwiML URL which the response of the voice call is stated
     # + statusCallback - (optional) StatusCallback record which contains the callback url and the events whose status needs to be delivered.
     # + return - If success, returns voice call response object with basic details, else returns error
-    remote function makeVoiceCall(string fromNo, string toNo, string twiml, StatusCallback? statusCallback = ()) returns @tainted 
+    remote isolated function makeVoiceCall(string fromNo, string toNo, string twiml, StatusCallback? statusCallback = ()) returns @tainted 
     VoiceCallResponse|error {
         http:Request req = new;
         string requestBody = "";

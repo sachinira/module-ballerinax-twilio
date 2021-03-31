@@ -35,8 +35,8 @@ public function main() {
 
     //Response is printed as log messages
     if (details is twilio:Account) {
-        log:print("Account Detail: " + details.toString());
+        log:printInfo("Account Detail: " + details.toString());
     } else {
-        log:print(details.message());
+        log:printInfo(details.message());
     }
 }
