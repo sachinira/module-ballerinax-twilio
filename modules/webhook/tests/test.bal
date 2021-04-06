@@ -22,14 +22,14 @@ import ballerina/test;
 import ballerinax/twilio;
 import ballerina/http;
 
-configurable string twilioAccountSid = os:getEnv("ACCOUNT_SID");
-configurable string twilioAuthToken = os:getEnv("AUTH_TOKEN");
-configurable string fromNumber = os:getEnv("SAMPLE_FROM_MOBILE");
-configurable string toNumber = os:getEnv("SAMPLE_TO_MOBILE");
-configurable string test_message = os:getEnv("SAMPLE_MESSAGE");
-configurable string twimlUrl = os:getEnv("SAMPLE_TWIML_URL");
-configurable string callbackUrl = os:getEnv("CALLBACK_URL");
-configurable string port =  os:getEnv("PORT");
+configurable string & readonly twilioAccountSid = os:getEnv("ACCOUNT_SID");
+configurable string & readonly twilioAuthToken = os:getEnv("AUTH_TOKEN");
+configurable string & readonly fromNumber = os:getEnv("SAMPLE_FROM_MOBILE");
+configurable string & readonly toNumber = os:getEnv("SAMPLE_TO_MOBILE");
+configurable string & readonly test_message = os:getEnv("SAMPLE_MESSAGE");
+configurable string & readonly twimlUrl = os:getEnv("SAMPLE_TWIML_URL");
+configurable string & readonly callbackUrl = os:getEnv("CALLBACK_URL");
+configurable string & readonly port = "8080";
 
 int PORT = check ints:fromString(port);
 listener TwilioEventListener twilioListener = new (PORT, twilioAuthToken, callbackUrl);
@@ -78,7 +78,7 @@ twilio:TwilioConfiguration twilioConfig = {
 
 twilio:Client twilioClient = new (twilioConfig);
 
-@test:Config {enable: true}
+@test:Config {enable: false}
 function testSmsQueued() {
     var details = twilioClient->sendSms(fromNumber, toNumber, test_message, callbackUrl);
     if (details is twilio:SmsResponse) {
@@ -87,7 +87,7 @@ function testSmsQueued() {
         test:assertFail(msg = details.message());
     }
 
-    int counter = 50;
+    int counter = 30;
     while (!smsQueuedNotified && counter >= 0) {
         runtime:sleep(1);
         counter -= 1;
@@ -100,7 +100,7 @@ function testSmsQueued() {
 
 }
 
-@test:Config {enable: true}
+@test:Config {enable: false}
 function testSmsSent() {
     var details = twilioClient->sendSms(fromNumber, toNumber, test_message, callbackUrl);
     if (details is twilio:SmsResponse) {
@@ -109,7 +109,7 @@ function testSmsSent() {
         test:assertFail(msg = details.message());
     }
 
-    int counter = 50;
+    int counter = 30;
     while (!smsSentNotified && counter >= 0) {
         runtime:sleep(1);
         counter -= 1;
@@ -139,7 +139,7 @@ function testVoiceCallRinging() {
         test:assertFail(msg = details.message());
     }
 
-    int counter = 50;
+    int counter = 30;
     while (!callRingingNotified && counter >= 0) {
         runtime:sleep(1);
         counter -= 1;
@@ -148,7 +148,7 @@ function testVoiceCallRinging() {
     log:printInfo("\n -----------------------The End of CallRingingEvent Test--------------------------------------------");
 }
 
-@test:Config {enable: false }
+@test:Config {enable: false}
 function testVoiceCallAnswered() {
     log:printInfo("\n --------------Starting CallAnswerdEvent------------------------------------------------------------");
     log:printInfo("twilioWebhook -> testVoiceCallAnswered()");
@@ -166,7 +166,7 @@ function testVoiceCallAnswered() {
         test:assertFail(msg = details.message());
     }
 
-    int counter = 50;
+    int counter = 30;
     while (!callInProgressNotified && counter >= 0) {
         runtime:sleep(1);
         counter -= 1;
@@ -194,7 +194,7 @@ function testVoiceCallCompleted() {
         test:assertFail(msg = details.message());
     }
 
-    int counter = 50;
+    int counter = 30;
     while (!callCompletedNotified && counter >= 0) {
         runtime:sleep(1);
         counter -= 1;

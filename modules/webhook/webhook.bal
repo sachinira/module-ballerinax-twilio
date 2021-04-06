@@ -85,7 +85,7 @@ public class TwilioEventListener {
         final map<string> keyValueMap = {};
         string[] keys = [];
         foreach var [entry, value] in eventPayload.entries() {
-            if(keyValueMap[entry] === "") {
+            if(keyValueMap[entry] == "") {
                 keys.push(entry);
                 keyValueMap[entry] = value;
             }

@@ -25,13 +25,13 @@ string messageSid = "";
 
 // ACCOUNT_SID, AUTH_TOKEN, AUTHY_API_KEY should be changed with your own account credentials
 
-configurable string twilioAccountSid = os:getEnv("ACCOUNT_SID");
-configurable string twilioAuthToken = os:getEnv("AUTH_TOKEN");
-configurable string fromNumber = os:getEnv("SAMPLE_FROM_MOBILE");
-configurable string toNumber = os:getEnv("SAMPLE_TO_MOBILE");
-configurable string test_message = os:getEnv("SAMPLE_MESSAGE");
-configurable string fromWhatsappNumber = os:getEnv("SAMPLE_WHATSAPP_SANDBOX");
-configurable string twimlUrl = os:getEnv("SAMPLE_TWIML_URL");
+configurable string & readonly twilioAccountSid = os:getEnv("ACCOUNT_SID");
+configurable string & readonly twilioAuthToken = os:getEnv("AUTH_TOKEN");
+configurable string & readonly fromNumber = os:getEnv("SAMPLE_FROM_MOBILE");
+configurable string & readonly toNumber = os:getEnv("SAMPLE_TO_MOBILE");
+configurable string & readonly test_message = os:getEnv("SAMPLE_MESSAGE");
+configurable string & readonly fromWhatsappNumber = os:getEnv("SAMPLE_WHATSAPP_SANDBOX");
+configurable string & readonly twimlUrl = os:getEnv("SAMPLE_TWIML_URL");
 
 TwilioConfiguration twilioConfig = {
     accountSId: twilioAccountSid,
