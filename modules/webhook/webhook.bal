@@ -54,7 +54,8 @@ public class TwilioEventListener {
     # + caller - The http caller object for responding to requests 
     # + twilioRequest - The HTTP request.
     # + return - If success, returns TwilioEvent object, else returns error
-    public isolated function getEventType(http:Caller caller, http:Request twilioRequest) returns @tainted error|TwilioEvent {
+    public isolated function getEventType(http:Caller caller, http:Request twilioRequest) returns 
+                                          @tainted TwilioEvent|error {
         map<string> payload = check twilioRequest.getFormParams();
         string generatedSignature = "";
         if(payload.hasKey("CallStatus")) {

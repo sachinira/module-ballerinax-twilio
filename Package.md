@@ -28,7 +28,7 @@ The Twilio connector consists with two modules
 Java Development Kit (JDK) with version 11 is required.
 
 * Ballerina SLAlpha2 Installed
-Ballerina Swan Lake Alpha 2 is required. 
+Ballerina Swan Lake Alpha 4 is required. 
 
 * (optional)[ngork](https://ngrok.com/) is requried to test listner samples using localhost
 
@@ -38,7 +38,7 @@ Ballerina Swan Lake Alpha 2 is required.
 
 |                           |    Version         |
 |:-------------------------:|:------------------:|
-| Ballerina Language        | Swan Lake Alpha2   |
+| Ballerina Language        | Swan Lake Alpha 4  |
 | Twilio Basic API          | 2010-04-01         |
 | Java Development Kit (JDK)| 11                 |
 

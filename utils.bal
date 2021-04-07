@@ -28,7 +28,7 @@ isolated function parseResponseToJson(http:Response|http:ClientError httpRespons
         if (jsonResponse is json) {
             if (httpResponse.statusCode != http:STATUS_OK && httpResponse.statusCode != http:STATUS_CREATED) {
                 string code = "";
-                if (jsonResponse?.error_code is json) { //////
+                if (jsonResponse?.error_code is json) {
                     json|error codeTemp = jsonResponse?.error_code;
                     if(codeTemp is json) {
                         code = codeTemp.toString();
@@ -84,6 +84,16 @@ isolated function createUrlEncodedRequestBody(string requestBody, string key, st
         body = requestBody + "&";
     }
     return body + key + "=" + encodedString;
+}
+
+isolated function createxAuthyKeyHeaderMap(string? xAuthyKey) returns map<string>|Error {
+    if (xAuthyKey !== ()) {
+        return {
+            [X_AUTHY_API_KEY] : <string>xAuthyKey
+        };
+    } else {
+        return prepareError("No xAuthyKey found");
+    }
 }
 
 isolated function convertToBoolean(json|error value) returns boolean {

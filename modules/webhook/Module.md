@@ -11,7 +11,7 @@ user secrets via SMS or voice message, verify OTP, and add and delete users. It 
 
 |                          |    Version         |
 |:------------------------:|:------------------:|
-| Ballerina Language       | Swan Lake Alpha2 |
+| Ballerina Language       | Swan Lake Alpha 4  |
 | Twilio Basic API         | 2010-04-01         |
 
 The Twilio Listener connector allows you to listen to Twilio SMS and Call status change events.

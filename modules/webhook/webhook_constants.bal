@@ -44,11 +44,14 @@ public const string COMPLETED = "completed";
 
 # Twilio dialed the number, but received a busy response.
 public const string BUSY = "busy";
-# Twilio's carriers could not connect the call. Possible causes include the destination is unreachable, or the number may have been input incorrectly.
+# Twilio's carriers could not connect the call. Possible causes include the destination is unreachable, or the number 
+# may have been input incorrectly.
 public const string FAILED = "failed";
-# Twilio dialed the number but no one answered before the timeout parameter value elapsed. This can be configured for each call, but by default is set to 60 seconds on outbound API calls, and 30 seconds on outbound <Dial> calls.
+# Twilio dialed the number but no one answered before the timeout parameter value elapsed. This can be configured for 
+# each call, but by default is set to 60 seconds on outbound API calls, and 30 seconds on outbound <Dial> calls.
 public const string NO_ANSWER= "no-answer";
-# Prior to being answered, an outbound call was cancelled via an HTTP POST request to the REST API, or an incoming call was disconnected by the calling party
+# Prior to being answered, an outbound call was cancelled via an HTTP POST request to the REST API, or an incoming call 
+# was disconnected by the calling party
 public const string CANCELED= "canceled";
 
 

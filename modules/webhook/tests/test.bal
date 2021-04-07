@@ -29,7 +29,7 @@ configurable string & readonly toNumber = os:getEnv("SAMPLE_TO_MOBILE");
 configurable string & readonly test_message = os:getEnv("SAMPLE_MESSAGE");
 configurable string & readonly twimlUrl = os:getEnv("SAMPLE_TWIML_URL");
 configurable string & readonly callbackUrl = os:getEnv("CALLBACK_URL");
-configurable string & readonly port = "8080";
+configurable string & readonly port = os:getEnv("PORT");
 
 int PORT = check ints:fromString(port);
 listener TwilioEventListener twilioListener = new (PORT, twilioAuthToken, callbackUrl);
@@ -123,7 +123,7 @@ function testSmsSent() {
 
 @test:Config {enable: false}
 function testVoiceCallRinging() {
-    log:printInfo("\n -------------------------Starting CallRingingEvent-------------------------------------------------");
+    log:printInfo("\n -------------------------Starting CallRingingEvent---------------------------------------------");
     log:printInfo("twilioWebhook -> testVoiceCallRinging()");
     twilio:StatusCallback statusCallback = {
         url: callbackUrl,
@@ -132,7 +132,7 @@ function testVoiceCallRinging() {
     };
     runtime:sleep(10);
     var details = twilioClient->makeVoiceCall(fromNumber, toNumber, twimlUrl, statusCallback);
-    log:printInfo("\n ------------The call needn't to be answered--------------------------------------------------------");
+    log:printInfo("\n ------------The call needn't to be answered----------------------------------------------------");
     if (details is twilio:VoiceCallResponse) {
         log:printInfo(details.status.toBalString());
     } else {
@@ -145,12 +145,12 @@ function testVoiceCallRinging() {
         counter -= 1;
     }
     test:assertTrue(callRingingNotified, msg = "expected a call to be make and receive a ringing notification");
-    log:printInfo("\n -----------------------The End of CallRingingEvent Test--------------------------------------------");
+    log:printInfo("\n -----------------------The End of CallRingingEvent Test----------------------------------------");
 }
 
 @test:Config {enable: false}
 function testVoiceCallAnswered() {
-    log:printInfo("\n --------------Starting CallAnswerdEvent------------------------------------------------------------");
+    log:printInfo("\n --------------Starting CallAnswerdEvent--------------------------------------------------------");
     log:printInfo("twilioWebhook -> testVoiceCallAnswered()");
     twilio:StatusCallback statusCallback = {
         url: callbackUrl,
@@ -159,7 +159,7 @@ function testVoiceCallAnswered() {
     };
     runtime:sleep(10);
     var details = twilioClient->makeVoiceCall(fromNumber, toNumber, twimlUrl, statusCallback);
-    log:printInfo("\n ------------The call should be answered------------------------------------------------------------");
+    log:printInfo("\n ------------The call should be answered--------------------------------------------------------");
     if (details is twilio:VoiceCallResponse) {
         log:printInfo(details.status.toBalString());
     } else {
@@ -172,12 +172,12 @@ function testVoiceCallAnswered() {
         counter -= 1;
     }
     test:assertTrue(callInProgressNotified, msg = "expected a call to be make and receive a answered notification");
-    log:printInfo("\n --------------The End of  CallAnswerdEvent Test--------------------------------------------------");
+    log:printInfo("\n --------------The End of  CallAnswerdEvent Test------------------------------------------------");
 }
 
 @test:Config {enable: false}
 function testVoiceCallCompleted() {
-    log:printInfo("\n --------------Starting CallCompletedEvent Test-----------------------------------------------------");
+    log:printInfo("\n --------------Starting CallCompletedEvent Test-------------------------------------------------");
     log:printInfo("twilioWebhook -> testVoiceCallCompleted()");
     twilio:StatusCallback statusCallback = {
         url: callbackUrl,
@@ -187,7 +187,7 @@ function testVoiceCallCompleted() {
 
     runtime:sleep(10);
     var details = twilioClient->makeVoiceCall(fromNumber, toNumber, twimlUrl, statusCallback);
-    log:printInfo("\n ------------The call should be answered------------------------------------------------------------");
+    log:printInfo("\n ------------The call should be answered--------------------------------------------------------");
     if (details is twilio:VoiceCallResponse) {
         log:printInfo(details.status.toBalString());
     } else {
@@ -201,5 +201,5 @@ function testVoiceCallCompleted() {
     }
 
     test:assertTrue(callCompletedNotified, msg = "expected a call to be make and receive a completed notification");
-    log:printInfo("\n --------------The End of  CallCompletedEvent Test--------------------------------------------------");
+    log:printInfo("\n --------------The End of  CallCompletedEvent Test----------------------------------------------");
 }
